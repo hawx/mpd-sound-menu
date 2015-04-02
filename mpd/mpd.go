@@ -49,6 +49,12 @@ func Dial(network, address string) (*Mpd, error) {
 		return nil, err
 	}
 
+	go func() {
+		for _ = range time.Tick(30 * time.Second) {
+			client.Ping()
+		}
+	}()
+
 	return &Mpd{client: client, watcher: watcher}, nil
 }
 
@@ -85,12 +91,6 @@ func (w *Mpd) notifyCurrentSong() {
 
 func (w *Mpd) Update(notifier Notifier) {
 	w.notifier = notifier
-
-	go func() {
-		for _ = range time.Tick(time.Minute) {
-			w.client.Ping()
-		}
-	}()
 
 	go func() {
 		w.notifyPlaybackStatus()
