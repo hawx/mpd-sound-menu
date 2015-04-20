@@ -5,7 +5,7 @@ Tool to display/control mpd from Ubuntu's sound menubar item.
 Install with:
 
 ``` bash
-$ go get github.com/hawx/mpd-sound-menu
+$ go get hawx.me/code/mpd-sound-menu
 ```
 
 Then add a `.desktop` entry for it:

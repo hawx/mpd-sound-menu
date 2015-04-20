@@ -9,8 +9,8 @@ import (
 	"github.com/guelfey/go.dbus"
 	"github.com/guelfey/go.dbus/introspect"
 	"github.com/guelfey/go.dbus/prop"
-	"github.com/hawx/mpd-sound-menu/mpd"
-	"github.com/hawx/mpd-sound-menu/mpris"
+	"hawx.me/code/mpd-sound-menu/mpd"
+	"hawx.me/code/mpd-sound-menu/mpris"
 )
 
 const (
