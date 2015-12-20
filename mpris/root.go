@@ -17,7 +17,7 @@ func (m Root) Quit() *dbus.Error {
 	return nil
 }
 
-func RootProps() map[string]*prop.Prop {
+func RootProps(name string) map[string]*prop.Prop {
 	return map[string]*prop.Prop{
 		"CanQuit": &prop.Prop{
 			Value:    false,
@@ -35,12 +35,12 @@ func RootProps() map[string]*prop.Prop {
 			Emit:     prop.EmitFalse,
 		},
 		"Identity": &prop.Prop{
-			Value:    "mpd-sound-menu",
+			Value:    name,
 			Writable: false,
 			Emit:     prop.EmitFalse,
 		},
 		"DesktopEntry": &prop.Prop{
-			Value:    "mpd-sound-menu",
+			Value:    name,
 			Writable: false,
 			Emit:     prop.EmitFalse,
 		},

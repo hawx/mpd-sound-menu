@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -17,7 +18,13 @@ const (
 	MprisPath       = "/org/mpris/MediaPlayer2"
 	RootInterface   = "org.mpris.MediaPlayer2"
 	PlayerInterface = RootInterface + ".Player"
-	Name            = "org.mpris.MediaPlayer2.mpd-sound-menu"
+	Name            = "org.mpris.MediaPlayer2."
+)
+
+var (
+	network   = flag.String("net", "tcp", "")
+	address   = flag.String("addr", ":6600", "")
+	localName = flag.String("name", "mpd-sound-menu", "")
 )
 
 func Start(client *mpd.Mpd) (*dbus.Conn, error) {
@@ -29,7 +36,7 @@ func Start(client *mpd.Mpd) (*dbus.Conn, error) {
 		return conn, fmt.Errorf("Failed to connect to session bus: %s", err)
 	}
 
-	reply, err := conn.RequestName(Name, dbus.NameFlagDoNotQueue)
+	reply, err := conn.RequestName(Name+*localName, dbus.NameFlagDoNotQueue)
 	if err != nil {
 		return conn, fmt.Errorf("Failed to get name: %s", err)
 	}
@@ -42,7 +49,7 @@ func Start(client *mpd.Mpd) (*dbus.Conn, error) {
 	conn.Export(player, MprisPath, PlayerInterface)
 
 	propsSpec := map[string]map[string]*prop.Prop{
-		RootInterface:   mpris.RootProps(),
+		RootInterface:   mpris.RootProps(*localName),
 		PlayerInterface: mpris.PlayerProps(),
 	}
 
@@ -102,7 +109,9 @@ func (u *propertyAdapter) UpdateCurrentSong(song mpd.Song) {
 }
 
 func main() {
-	mpdclient, err := mpd.Dial("tcp", ":6600")
+	flag.Parse()
+
+	mpdclient, err := mpd.Dial(*network, *address)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -113,6 +122,8 @@ func main() {
 		log.Fatal(err)
 	}
 	defer conn.Close()
+
+	log.Println("Started")
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, os.Kill)

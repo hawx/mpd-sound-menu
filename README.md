@@ -16,7 +16,7 @@ $ cat > ~/.local/share/applications/mpd-sound-menu.desktop
 Name=mpd-sound-menu
 Comment=Sound menu plugin to display mpd
 Exec=/path/to/mpd-sound-menu
-Icon=mpf-sound-menu
+Icon=mpd-sound-menu
 Type=Application
 ```
 

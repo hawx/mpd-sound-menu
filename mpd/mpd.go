@@ -36,13 +36,13 @@ type Mpd struct {
 }
 
 func Dial(network, address string) (*Mpd, error) {
-	client, err := mpd.Dial("tcp", ":6600")
+	client, err := mpd.Dial(network, address)
 	if err != nil {
 		client.Close()
 		return nil, err
 	}
 
-	watcher, err := mpd.NewWatcher("tcp", ":6600", "")
+	watcher, err := mpd.NewWatcher(network, address, "")
 	if err != nil {
 		client.Close()
 		watcher.Close()
