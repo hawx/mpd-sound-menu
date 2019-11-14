@@ -1,0 +1,4 @@
+github.com/fhs/gompd v2.0.0+incompatible h1:pv5XKTatya1k3r1woaWLwFQiF0BfAsgWSe5ev2XZ0UM=
+github.com/fhs/gompd v2.0.0+incompatible/go.mod h1:UVZXd9wmFBH5tIXLYeI+CGUIt15ZvtGQvVO6SDHy1os=
+github.com/guelfey/go.dbus v0.0.0-20131113121618-f6a3a2366cc3 h1:fngCxKbvZdctIsWj2hYijhAt4iK0JXSSA78B36xP0yI=
+github.com/guelfey/go.dbus v0.0.0-20131113121618-f6a3a2366cc3/go.mod h1:0CNX5Cvi77WEH8llpfZ/ieuqyceb1cnO5//b5zzsnF8=
