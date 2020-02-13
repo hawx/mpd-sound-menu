@@ -1,7 +1,7 @@
 package mpris
 
 import (
-	"github.com/guelfey/go.dbus"
+	dbus "github.com/guelfey/go.dbus"
 	"github.com/guelfey/go.dbus/prop"
 )
 

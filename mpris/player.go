@@ -1,8 +1,9 @@
 package mpris
 
 import (
-	"github.com/guelfey/go.dbus"
+	dbus "github.com/guelfey/go.dbus"
 	"github.com/guelfey/go.dbus/prop"
+	"hawx.me/code/mpd-sound-menu/mpd"
 )
 
 // http://specifications.freedesktop.org/mpris-spec/latest/Player_Interface.html
@@ -62,11 +63,11 @@ func (p Player) OpenUri(s string) *dbus.Error {
 	return nil
 }
 
-func PlayerProps() map[string]*prop.Prop {
+func PlayerProps(state mpd.PlayState) map[string]*prop.Prop {
 	return map[string]*prop.Prop{
 		"PlaybackStatus": &prop.Prop{
-			Value:    "Stopped",
-			Writable: true,
+			Value:    dbus.MakeVariant(string(state)),
+			Writable: false,
 			Emit:     prop.EmitTrue,
 		},
 		"LoopStatus": &prop.Prop{
@@ -123,12 +124,12 @@ func PlayerProps() map[string]*prop.Prop {
 			Emit:     prop.EmitFalse,
 		},
 		"CanPlay": &prop.Prop{
-			Value:    true,
+			Value:    state != mpd.Playing,
 			Writable: false,
-			Emit:     prop.EmitFalse,
+			Emit:     prop.EmitTrue,
 		},
 		"CanPause": &prop.Prop{
-			Value:    true,
+			Value:    state != mpd.Paused,
 			Writable: false,
 			Emit:     prop.EmitFalse,
 		},

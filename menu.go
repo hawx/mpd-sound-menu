@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/guelfey/go.dbus"
+	dbus "github.com/guelfey/go.dbus"
 	"github.com/guelfey/go.dbus/introspect"
 	"github.com/guelfey/go.dbus/prop"
 	"hawx.me/code/mpd-sound-menu/mpd"
@@ -50,7 +50,7 @@ func Start(client *mpd.Mpd) (*dbus.Conn, error) {
 
 	propsSpec := map[string]map[string]*prop.Prop{
 		RootInterface:   mpris.RootProps(*localName),
-		PlayerInterface: mpris.PlayerProps(),
+		PlayerInterface: mpris.PlayerProps(client.PlayState()),
 	}
 
 	props := prop.New(conn, MprisPath, propsSpec)
@@ -93,16 +93,18 @@ type propertyAdapter struct {
 }
 
 func (u *propertyAdapter) UpdatePlaybackStatus(state mpd.PlayState) {
+	log.Println("playbackStatus", state)
 	u.props.Set(PlayerInterface, "PlaybackStatus", dbus.MakeVariant(string(state)))
 }
 
 func (u *propertyAdapter) UpdateCurrentSong(song mpd.Song) {
+	log.Println("currentSong", song)
 	u.props.Set(PlayerInterface, "Metadata", dbus.MakeVariant(
 		map[string]dbus.Variant{
 			"mrpis:trackid": dbus.MakeVariant(song.Id),
 			"mpris:length":  dbus.MakeVariant(song.Length),
 			"xesam:title":   dbus.MakeVariant(song.Title),
-			"xesam:artist":  dbus.MakeVariant(song.Artist),
+			"xesam:artist":  dbus.MakeVariant([]string{song.Artist}),
 			"xesam:album":   dbus.MakeVariant(song.Album),
 		},
 	))

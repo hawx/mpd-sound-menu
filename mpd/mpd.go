@@ -64,7 +64,7 @@ func (w *Mpd) Close() {
 }
 
 func (w *Mpd) notifyPlaybackStatus() {
-	w.notifier.UpdatePlaybackStatus(w.playState())
+	w.notifier.UpdatePlaybackStatus(w.PlayState())
 }
 
 func (w *Mpd) notifyCurrentSong() {
@@ -116,7 +116,7 @@ func (w *Mpd) Pause() {
 }
 
 func (w *Mpd) PlayPause() {
-	if w.playState() == Playing {
+	if w.PlayState() == Playing {
 		w.client.Pause(true)
 	} else {
 		w.client.Pause(false)
@@ -137,7 +137,7 @@ func (w *Mpd) Previous() {
 	w.client.Previous()
 }
 
-func (w *Mpd) playState() PlayState {
+func (w *Mpd) PlayState() PlayState {
 	attrs, _ := w.client.Status()
 
 	switch attrs["state"] {
